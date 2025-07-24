@@ -327,6 +327,12 @@ const writeResults = (persons, theaters) => {
     "utf8"
   );
 
+  // 公演別で当選人数をコンソールに出力する
+
+  theaters.forEach((theater) => {
+    console.log(theater.id, theater.assigned.size);
+  });
+
   // 劇別: 劇ID タブ 当選応募者ID...
   const classLines = theaters
     .map((theater) => [theater.id, ...[...theater.assigned].sort()].join("\t"))
