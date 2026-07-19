@@ -160,10 +160,11 @@ const pickWinners = (candidates, seats, random) =>
  * @param {Array<{id: string, assigned: Set<string>}>} winners - 当選者オブジェクト配列
  * @param {{id: string, assigned: Set<string>}} theater - 劇オブジェクト
  */
-const assignWinners = (winners, theater) => {
+const assignWinners = (winners, theater, isVacancy) => {
   for (const p of winners) {
     theater.assigned.add(p.id);
-    p.assigned.add(theater.id);
+    if (isVacancy) p.assigned.add(theater.id + "(補)");
+    else p.assigned.add(theater.id);
   }
 };
 
@@ -175,7 +176,8 @@ const assignWinners = (winners, theater) => {
  * @returns {boolean} 重複ありなら true
  */
 const hasConflict = (person, theater, theaterMap) => {
-  for (const tid of person.assigned) {
+  for (const _tid of person.assigned) {
+    const tid = _tid.replace("(補)", "");
     const assignedTh = theaterMap.get(tid);
     // 時間帯または作品が一致していたら衝突
     if (
@@ -243,9 +245,12 @@ const runInitialLottery = (
 
         // 当選者を決定し，登録
         const winners = pickWinners(candidates, seats, random);
-        assignWinners(winners, theater);
+        assignWinners(winners, theater, false);
         seats -= winners.length;
       }
+
+      // この希望順位の抽選が終了した時点での残席数を出力
+      console.log(`第${rank + 1}希望 ${theater.id} (抽選後の残席: ${seats})`);
     }
   }
 };
@@ -295,7 +300,7 @@ const runVacancyLottery = (persons, theaters, theaterMap, random) => {
       // 衝突なしの候補者をシャッフル抽選
       // 当選者を決定し，登録
       const winners = pickWinners(eligible, seats, random);
-      assignWinners(winners, theater);
+      assignWinners(winners, theater, true);
       seats -= winners.length;
     }
   }
