@@ -1,0 +1,20 @@
+{
+  "name": "theater-lottery-system",
+  "version": "1.0.0",
+  "description": "演劇抽選プログラム - 劇優先方式＋パターンA（ラウンド単位補充）",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "lottery",
+    "theater",
+    "drawing"
+  ],
+  "author": "ISHIDA Kouji",
+  "license": "MIT",
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}
