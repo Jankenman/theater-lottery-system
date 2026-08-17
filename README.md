@@ -115,7 +115,7 @@ node index.js
 ```
 
 - 行順：`orders.tsv` の順序を維持
-- 各行の劇 ID リストは昇順ソート
+- 各行の劇 ID リストは `theaters.tsv` の順序
 - 初回抽選＋欠員補充後の合計結果
 
 ### 2. class.tsv

@@ -13,10 +13,16 @@ const CLASS_RESULT_FILE = "class.tsv";
 const writeResults = (persons, theaters) => {
   ensureDirectoryExists(OUTPUT_DIR);
 
-  // 個人別: ID タブ 当選劇ID...
+  // theaters.tsv の順序マップ（劇ID -> インデックス）
+  const theaterOrderMap = new Map(
+    theaters.map((theater, index) => [theater.id, index])
+  );
+
+  // 個人別: ID タブ 当選劇ID... (input/theaters.tsv の順序で出力)
   const individualLines = persons
-    .map((person) => [person.id, ...person.getSortedAssignments()].join("\t"))
-    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map((person) =>
+      [person.id, ...person.getSortedAssignments(theaterOrderMap)].join("\t")
+    )
     .join("\n");
   writeTextFile(
     path.join(OUTPUT_DIR, INDIVIDUAL_RESULT_FILE),
@@ -28,10 +34,9 @@ const writeResults = (persons, theaters) => {
     console.log(theater.id, theater.getAssignmentCount());
   });
 
-  // 劇別: 劇ID タブ 当選応募者ID...
+  // 劇別: 劇ID タブ 当選応募者ID... (theaters.tsv の順序を維持)
   const classLines = theaters
     .map((theater) => [theater.id, ...theater.getSortedAssignments()].join("\t"))
-    .sort((a, b) => a[0].localeCompare(b[0]))
     .join("\n");
   writeTextFile(
     path.join(OUTPUT_DIR, CLASS_RESULT_FILE),

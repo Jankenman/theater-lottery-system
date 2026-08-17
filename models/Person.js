@@ -61,9 +61,26 @@ class Person {
 
   /**
    * 当選劇IDの配列を取得する（ソート済み）
+   * @param {Map<string, number>} [theaterOrderMap] - 劇IDの順序マップ（指定時はtheaters.tsv順、未指定時は昇順）
    * @returns {string[]}
    */
-  getSortedAssignments() {
+  getSortedAssignments(theaterOrderMap) {
+    if (theaterOrderMap) {
+      return [...this.assigned].sort((a, b) => {
+        const theaterIdA = a.replace("(補)", "");
+        const theaterIdB = b.replace("(補)", "");
+        const orderA = theaterOrderMap.has(theaterIdA)
+          ? theaterOrderMap.get(theaterIdA)
+          : Infinity;
+        const orderB = theaterOrderMap.has(theaterIdB)
+          ? theaterOrderMap.get(theaterIdB)
+          : Infinity;
+        if (orderA !== orderB) {
+          return orderA - orderB;
+        }
+        return a.localeCompare(b);
+      });
+    }
     return [...this.assigned].sort();
   }
 }
