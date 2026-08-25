@@ -52,12 +52,14 @@ Node.js で「劇優先方式＋パターン A（ラウンド単位補充）」�
 ```json
 {
   "maxOrders": 3,
-  "enableVacancy": true
+  "enableVacancy": true,
+  "seed": 123456,
 }
 ```
 
 - `maxOrders`：各人が出せる希望順位の最大数
 - `enableVacancy`：欠員補充処理を実行するか（`true`／`false`）
+- `seed`: シード値
 
 ## 入力ファイルフォーマット
 
